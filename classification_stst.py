@@ -27,6 +27,7 @@ if __name__ == '__main__':
 
     # train model for study to study transfer
     for study in Study:
+        #study = 'FR-CRC'
         print('training on {} with Study to Study Transfer'.format(study))
         # get sample_id about study
         train_data = pd.read_csv('pre_data//species_stst//{}//{}_data.csv'.format(study,study),header=0,index_col=0)
@@ -54,16 +55,25 @@ if __name__ == '__main__':
                 test_sample = train_sample_id[test_index]
                 train_pre_matrix.loc[test_sample,'%d'%(i+1)] = proba
                 for study_test in Study:
-                    if study_test is not study:
+                    if study_test is study:
                         continue
                     else:
-                        test_stst = pd .read_csv()
+                        test_stst = pd .read_csv('pre_data//species_stst//{}//{}_data.csv'.format(study_test,study_test),header=0,index_col=0)
+                        test_stst_index = test_stst._stat_axis.values.tolist()
+                        test_stst_y = test_stst['Label']
+                        test_stst_x = test_stst.drop(columns='Label')
+                        proba_stst = lr.predict_proba(test_stst_x)[:,1] / 100
+                        predict_matrix.loc[test_stst_index,study] += proba_stst
+
 
 
 
 
         train_pre_mean = train_pre_matrix.mean(1)
         predict_matrix.loc[train_pre_matrix._stat_axis.values.tolist(),study] = train_pre_mean
+
+    print(predict_matrix)
+    predict_matrix.to_csv('predict_stst.csv')
 
 
 
