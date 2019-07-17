@@ -16,10 +16,11 @@ from warnings import simplefilter
 # ignore all future warnings
 
 Study = ['FR-CRC', 'AT-CRC', 'CN-CRC', 'US-CRC', 'DE-CRC']
+#Study = ['AT-CRC']
 log_n0 = 1e-5
 sd_min_q = 0.1
 parameters_stst = {'FR-CRC':1000,'AT-CRC':1000,'CN-CRC':0.1,'US-CRC':1,'DE-CRC':100}
-parameters_loso = {'FR-CRC':100,'AT-CRC':0.1,'CN-CRC':0.1,'US-CRC':0.1,'DE-CRC':0.1}
+parameters_loso = {'FR-CRC':0.1,'AT-CRC':0.1,'CN-CRC':0.1,'US-CRC':0.1,'DE-CRC':0.1}
 
 if __name__ == '__main__':
 
@@ -34,7 +35,7 @@ if __name__ == '__main__':
     sample_name = meta['Sample_ID'].tolist()
     #predict_matrix store the prediction result
     predict_matrix = pd.DataFrame(np.zeros(shape=(species.shape[1],6)),index=sample_name,columns=['FR-CRC','AT-CRC','CN-CRC','US-CRC','DE-CRC','LOSO'])
-    accuracy_matrix = pd.DataFrame(np.zeros(shape=(6,5)),index = ['FR-CRC', 'AT-CRC', 'CN-CRC', 'US-CRC', 'DE-CRC','LOSO']
+    accuracy_matrix = pd.DataFrame(np.zeros(shape=(7,5)),index = ['FR-CRC', 'AT-CRC', 'CN-CRC', 'US-CRC', 'DE-CRC','LOSO','LOSO_CV']
                                    ,columns=['FR-CRC', 'AT-CRC', 'CN-CRC', 'US-CRC', 'DE-CRC'])
     """
     train model for study to study transfer
@@ -95,8 +96,10 @@ if __name__ == '__main__':
                         test_stst_x = test_stst_x[:,std_preprocess!=0]
                         test_stst_x = np.log10(test_stst_x+log_n0)
                         test_stst_x = (test_stst_x - mean) / (std + q)
-                        #proba_stst = lr.predict_proba(test_removed)[:,1] / 100
+                        lr = LogisticRegression(penalty='l1',solver='liblinear',n_jobs=-1,C=parameters_stst[study])
+                        lr.fit(train_x,train_y)
                         proba_stst = lr.predict_proba(test_stst_x)[:,1] / 100
+                        #proba_stst = lr.predict_proba(test_stst_x)[:,1] / 100
                         predict_matrix.loc[test_stst_index,study] += proba_stst
                         score = lr.score(test_stst_x,test_stst_y)
                         #accuracy_matrix_stst[study][study_test].append(score)
@@ -114,8 +117,9 @@ if __name__ == '__main__':
         y = train_data['Label']
         x = train_data.drop(columns='Label')
         x = x.values
-        y =y.values
+        y = y.values
         for i in range(10):
+            right_num_study = 0
             skf = StratifiedKFold(n_splits=10)
             for train_index, test_index in skf.split(x, y):
                 train_x = x[train_index]
@@ -131,6 +135,12 @@ if __name__ == '__main__':
                 test_y = y[test_index]
                 lr = LogisticRegression(penalty='l1', solver='liblinear', n_jobs=-1,C = parameters_loso[study])
                 lr.fit(train_x,train_y)
+                test_x = test_x[:,std_preprocess!=0]
+                test_x = np.log10(test_x + log_n0)
+                test_x = (test_x - mean) / (std + q)
+                lr.score(test_x,test_y)
+                #print(lr.score(test_x,test_y))
+                right_num_study += np.sum(test_y == lr.predict(test_x))
                 test_data = pd.read_csv('pre_data//species_loso//{}//test_data.csv'.format(study),header=0,index_col=0)
                 test_sample_id = test_data._stat_axis.values.tolist()
                 test_loso_y = test_data['Label']
@@ -139,6 +149,7 @@ if __name__ == '__main__':
                 #test_loso_x = scalar.transform(test_loso_x)
                 test_loso_x = test_loso_x.values
                 test_loso_x = test_loso_x[:,std_preprocess != 0]
+                #print(test_loso_x.shape)
                 test_loso_x = np.log10(test_loso_x + log_n0)
                 test_loso_x = (test_loso_x - mean) / (std + q)
                 proba_loso = lr.predict_proba(test_loso_x)[:,1]/100
@@ -146,7 +157,7 @@ if __name__ == '__main__':
                 score = lr.score(test_loso_x,test_loso_y)
                 #accuracy_matrix_loso[study].append(score)
                 accuracy_matrix.loc['LOSO',study] += score / 100
-
+            accuracy_matrix.loc['LOSO_CV', study] += right_num_study / (len(x) * 10)
 
 
     #print(predict_matrix)
