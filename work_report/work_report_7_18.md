@@ -16,13 +16,17 @@ In figure 1 , the row is the traning set and the column is the testing set,and t
 
 ![](picture//figure1.png)
 
-​                                                    									figure 1
+               <center>figure 1</center>
+
+
 
 
 
 ![](picture//figure2.png)
 
-​																	        figure  2
+				<center> figure  2</center>
+
+
 
 
 
@@ -36,7 +40,9 @@ In figure 1 , the row is the traning set and the column is the testing set,and t
 | LOSO            | 0.733158      | 0.783486 | 0.774375 | 0.674038 | 0.795    |
 | LOSO_CV         | 0.767896      | 0.761803 | 0.758389 | 0.798301 | 0.742857 |
 
-​                                                                                    table 1
+                                                                                    <center>table 1</center>
+
+
 
 
 
@@ -52,7 +58,9 @@ I have tried to remove different ratio of features and then train the model to c
 
 The result is below.
 
-​							table 2  accuracy of removing 5% of the high feature importance 
+							<center>table 2  accuracy of removing 5% of the high feature importance </center>
+
+
 
 |         | FR-CRC   | AT-CRC   | CN-CRC   | US-CRC   | DE-CRC   |
 | ------- | -------- | -------- | -------- | -------- | -------- |
@@ -64,7 +72,12 @@ The result is below.
 | LOSO    | 0.732895 | 0.78945  | 0.772578 | 0.646442 | 0.796333 |
 | LOSO_CV | 0.767896 | 0.761803 | 0.758389 | 0.798301 | 0.742857 |
 
-​							table 3 accuracy of removing 10% of the high feature importance
+​				
+
+
+<center>table 3 accuracy of removing 10% of the high feature importance</center>
+
+
 
 |         | FR-CRC   | AT-CRC   | CN-CRC   | US-CRC   | DE-CRC   |
 | ------- | -------- | -------- | -------- | -------- | -------- |
