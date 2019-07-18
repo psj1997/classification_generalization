@@ -14,7 +14,7 @@ This is the reproduced result of AUC value in paper(figure 1 and 2) and accuracy
 
 In figure 1 , the row is the traning set and the column is the testing set,and the value the AUC value in testing set.In table 1,the row is the training set and the column is the testing set,the value is accuracy  result.This sixth is the accuracy result of LOSO in testing set and the last row is the accuracy result of LOSO in training set . 
 
-![](https://github.com/psj1997/classification_generalization//work_report//picture//figure1.png)
+![](picture//figure1.png)
 
 ​                                                    									figure 1
 
