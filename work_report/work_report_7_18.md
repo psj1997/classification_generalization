@@ -14,13 +14,13 @@ This is the reproduced result of AUC value in paper(figure 1 and 2) and accuracy
 
 In figure 1 , the row is the traning set and the column is the testing set,and the value the AUC value in testing set.In table 1,the row is the training set and the column is the testing set,the value is accuracy  result.This sixth is the accuracy result of LOSO in testing set and the last row is the accuracy result of LOSO in training set . 
 
-![1563424817765](C:\Users\admin\AppData\Roaming\Typora\typora-user-images\1563424817765.png)
+![](picture//figure1.png)
 
-​                                                    					figure 1
+​                                                    									figure 1
 
 
 
-![1563425444501](C:\Users\admin\AppData\Roaming\Typora\typora-user-images\1563425444501.png)
+![](picture//figure2.png)
 
 ​																	        figure  2
 
