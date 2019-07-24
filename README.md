@@ -2,11 +2,5 @@
 
 
 
-**prepare_data_loso.py** :prepare data for LOSO
-
-**prepare_data_stst.py** : prepare data for study for study transfer
-
-**classification.py**: reproduce the classification result in paper with species
-
-**classification_remove_features.py**: train a Randomforest model to classify the traning data and                       testing data.And remove the features that are important in the classification.
+run LR_lasso.py and classification_TKL.py can get the accuracy ,recall and predict_proba of the logistic_regression and Transfer Kernel Learning SVM.
 
